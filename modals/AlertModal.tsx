@@ -4,24 +4,26 @@ import React from "react";
 interface AlertModalProps {
   open: boolean;
   setOpen: (value: boolean) => void;
-  title: string;
+  title: string | React.ReactNode;
+  header?: string;
 }
 
 const AlertModal: React.FunctionComponent<AlertModalProps> = ({
   open,
   setOpen,
   title,
+  header,
 }) => {
   return (
     <Modal
-      title={"Metamask alert"}
+      title={header ? header : "Metamask alert"}
       centered
       open={open}
       onOk={() => setOpen(false)}
       onCancel={() => setOpen(false)}
       footer={[
-        <Button key="back" onClick={() => setOpen(false)}>
-          Return
+        <Button key="back" type="primary" onClick={() => setOpen(false)}>
+          Back
         </Button>,
       ]}
       className="review-modal"

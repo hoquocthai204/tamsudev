@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
+import AlertModal from "../../../modals/AlertModal";
 import { currentDateTime } from "../../common/utils/DateTime";
 import { getDataIpfs, uploadIpfsData } from "../../common/utils/Ipfs";
 import {
@@ -10,6 +11,7 @@ import {
 import { Modal } from "../../UI/Modal";
 import CommentReply from "./CommentReply";
 import FormReply from "./FormReply";
+import { useRouter } from "next/router";
 
 interface CommentReviewerProps {
   dataComment: [];
@@ -39,9 +41,19 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
   const [isReplied, setIsReplied] = useState(false);
   const { address } = useAccount();
   const [addressInfo, setAddressInfo] = useState("");
+  const [openShare, setOpenShare] = useState(false);
+  const { pathname } = useRouter();
+  const { comment } = useRouter().query;
+
   useEffect(() => {
     if (address) setAddressInfo(address);
   }, [address]);
+
+  useEffect(() => {
+    if (comment) {
+      console.log(comment);
+    }
+  }, [comment]);
 
   useEffect(() => {
     if (dataComment && dataComment.length > 0) {
@@ -76,7 +88,7 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
   };
 
   const setSubCmtNum = async () => {
-    let arr: any = [];
+    let arr: number[] = [];
     for (let iterator of dataComment) {
       const data = await getArrRepComment(iterator);
       arr.push(data.length || 0);
@@ -117,6 +129,10 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
     setIsShowReplyModal(false);
   };
 
+  const handleShare = () => {
+    setOpenShare(true);
+  };
+
   return (
     <>
       <div className="mt-[30px]">
@@ -129,8 +145,9 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
               let isShowRep = isShowReply?.includes(e.ipfsHash);
               let subCmtData =
                 subComment?.filter((h) => h.cmtHash === e.ipfsHash) || [];
+
               return (
-                <div key={i} className="mb-2.5">
+                <div key={e.ipfsHash} id={e.ipfsHash} className="mb-2.5">
                   <div
                     id="head"
                     className="flex justify-between border-b  px-5 py-2 bg-white text-[#999999]"
@@ -148,9 +165,11 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
                     <div>
                       <div>{e.dateTime}</div>
                       <div>
-                        <Link href="#">
-                          <a className="text-[#4d90fc]">Share link</a>
-                        </Link>
+                        {/* <Link href="#"> */}
+                        <a className="text-[#4d90fc]" onClick={handleShare}>
+                          Share link
+                        </a>
+                        {/* </Link> */}
                       </div>
                     </div>
                   </div>
@@ -206,6 +225,13 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
             />
           </div>
         </Modal>
+
+        <AlertModal
+          open={openShare}
+          setOpen={setOpenShare}
+          title={<p>{`${pathname} + ${companyInfo.ipfsHash}`}</p>}
+          header={"Share Link Comment"}
+        />
       </div>
     </>
   );

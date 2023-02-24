@@ -36,6 +36,7 @@ const CompanyCard: React.FunctionComponent<CompanyCardProps> = ({
     const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
     if (value) return regionNames.of(value);
   };
+
   const handleNavigate = () => {
     !isDetail && router.push(`/reviews/${hash}`);
   };
