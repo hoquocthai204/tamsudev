@@ -12,6 +12,7 @@ import { Modal } from "../../UI/Modal";
 import CommentReply from "./CommentReply";
 import FormReply from "./FormReply";
 import { useRouter } from "next/router";
+import { Popover } from "antd";
 
 interface CommentReviewerProps {
   dataComment: [];
@@ -44,6 +45,8 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
   const [openShare, setOpenShare] = useState(false);
   const { pathname } = useRouter();
   const { comment } = useRouter().query;
+  const [ipfsShared, setIpfsShared] = useState("");
+  const [popoverVisible, setPopoverVisible] = useState(false);
 
   useEffect(() => {
     if (address) setAddressInfo(address);
@@ -51,9 +54,9 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
 
   useEffect(() => {
     if (comment) {
-      console.log(comment);
+      // console.log(comment);
     }
-  }, [comment]);
+  }, []);
 
   useEffect(() => {
     if (dataComment && dataComment.length > 0) {
@@ -129,8 +132,17 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
     setIsShowReplyModal(false);
   };
 
-  const handleShare = () => {
+  const handleShare = (ipfs: string) => {
+    setIpfsShared(ipfs);
     setOpenShare(true);
+  };
+
+  const handleCopy = (e: any) => {
+    navigator.clipboard.writeText(e.target.innerHTML);
+    setPopoverVisible(true);
+    setTimeout(() => {
+      setPopoverVisible(false);
+    }, 1000);
   };
 
   return (
@@ -165,11 +177,12 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
                     <div>
                       <div>{e.dateTime}</div>
                       <div>
-                        {/* <Link href="#"> */}
-                        <a className="text-[#4d90fc]" onClick={handleShare}>
+                        <a
+                          className="text-[#4d90fc] cursor-pointer"
+                          onClick={() => handleShare(e.ipfsHash)}
+                        >
                           Share link
                         </a>
-                        {/* </Link> */}
                       </div>
                     </div>
                   </div>
@@ -212,6 +225,7 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
                 </div>
               );
             })}
+
         <Modal
           title="Reply Comment"
           show={isShowReplyModal}
@@ -229,7 +243,15 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
         <AlertModal
           open={openShare}
           setOpen={setOpenShare}
-          title={<p>{`${pathname} + ${companyInfo.ipfsHash}`}</p>}
+          title={
+            <Popover content="Copied" open={popoverVisible}>
+              <p onClick={handleCopy} className="cursor-pointer">{`${
+                process.env.NEXT_PUBLIC_HOST_URL
+              }${pathname.split("[")[0]}${
+                companyInfo.ipfsHash
+              }?comment=${ipfsShared}`}</p>
+            </Popover>
+          }
           header={"Share Link Comment"}
         />
       </div>

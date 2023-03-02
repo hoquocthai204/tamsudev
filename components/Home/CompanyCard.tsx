@@ -43,7 +43,10 @@ const CompanyCard: React.FunctionComponent<CompanyCardProps> = ({
 
   return (
     <>
-      <div className={`flex mb-2 ${className}`} onClick={handleNavigate}>
+      <div
+        className={`flex mb-2 ${className} cursor-pointer`}
+        onClick={handleNavigate}
+      >
         {info.imageHash ? (
           <div
             className="company__img-container"

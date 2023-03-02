@@ -6,6 +6,7 @@ interface AlertModalProps {
   setOpen: (value: boolean) => void;
   title: string | React.ReactNode;
   header?: string;
+  noFooter?: true;
 }
 
 const AlertModal: React.FunctionComponent<AlertModalProps> = ({
@@ -13,6 +14,7 @@ const AlertModal: React.FunctionComponent<AlertModalProps> = ({
   setOpen,
   title,
   header,
+  noFooter,
 }) => {
   return (
     <Modal
@@ -21,11 +23,13 @@ const AlertModal: React.FunctionComponent<AlertModalProps> = ({
       open={open}
       onOk={() => setOpen(false)}
       onCancel={() => setOpen(false)}
-      footer={[
-        <Button key="back" type="primary" onClick={() => setOpen(false)}>
-          Back
-        </Button>,
-      ]}
+      footer={
+        !noFooter && [
+          <Button key="back" type="primary" onClick={() => setOpen(false)}>
+            Back
+          </Button>,
+        ]
+      }
       className="review-modal"
     >
       <p className="review-modal__title">{title}</p>

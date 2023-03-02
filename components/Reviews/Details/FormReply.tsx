@@ -21,6 +21,7 @@ const optionsPresence = [
   { label: "I don't care", value: "I don't care" },
   { label: "Please delete", value: "Please delete" },
 ];
+
 const FormReply: React.FunctionComponent<FormReplyProps> = ({
   ipfsHash,
   setShow,
