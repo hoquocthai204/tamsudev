@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Popover } from "antd";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import AlertModal from "../../../modals/AlertModal";
@@ -11,8 +12,6 @@ import {
 import { Modal } from "../../UI/Modal";
 import CommentReply from "./CommentReply";
 import FormReply from "./FormReply";
-import { useRouter } from "next/router";
-import { Popover } from "antd";
 
 interface CommentReviewerProps {
   dataComment: [];
@@ -53,10 +52,13 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
   }, [address]);
 
   useEffect(() => {
-    if (comment) {
-      // console.log(comment);
+    if (comment && dataInfura) {
+      const element = document.querySelector(`#comment__${comment}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
-  }, []);
+  }, [comment, dataInfura]);
 
   useEffect(() => {
     if (dataComment && dataComment.length > 0) {
@@ -159,7 +161,11 @@ const CommentReviewer: React.FunctionComponent<CommentReviewerProps> = ({
                 subComment?.filter((h) => h.cmtHash === e.ipfsHash) || [];
 
               return (
-                <div key={e.ipfsHash} id={e.ipfsHash} className="mb-2.5">
+                <div
+                  key={e.ipfsHash}
+                  id={`comment__${e.ipfsHash}`}
+                  className="mb-2.5"
+                >
                   <div
                     id="head"
                     className="flex justify-between border-b  px-5 py-2 bg-white text-[#999999]"
