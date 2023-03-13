@@ -9,10 +9,12 @@ interface ComHistoryInfo {
   nameCompany: string;
   datetime: string;
   cidCompany: string;
+  cidComment: string;
 }
 
 const CommentCard: React.FunctionComponent<CommentCardProps> = (props) => {
   const [commentHistory, setCommentHistory] = useState<ComHistoryInfo[]>();
+
   useEffect(() => {
     (async () => {
       const resDt = await getCommentHistory();
@@ -31,7 +33,7 @@ const CommentCard: React.FunctionComponent<CommentCardProps> = (props) => {
         {commentHistory?.slice(0, 16).map((e, index) => {
           return (
             <li className="" key={index}>
-              <Link href={`/reviews/${e.cidCompany}`}>
+              <Link href={`/reviews/${e.cidCompany}?comment=${e.cidComment}`}>
                 <a href="" className="text-[#4d90fc]">
                   Review of: {e.nameCompany}
                 </a>

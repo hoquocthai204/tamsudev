@@ -16,7 +16,7 @@ const Reviews: React.FunctionComponent<ReviewsProps> = (props) => {
 
   const onConnect = async (connector: Connector) => {
     try {
-      const account = await connectAsync({ connector });
+      await connectAsync({ connector });
     } catch (error) {}
   };
 

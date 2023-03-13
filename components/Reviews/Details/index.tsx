@@ -180,14 +180,7 @@ const ReviewDetails: React.FunctionComponent<ReviewDetailsProps> = ({
       ipfsHash: "",
     };
 
-    const dataHis = {
-      nameCompany: companyInfo?.nameCom,
-      datetime: data?.dateTime,
-      cidCompany: companyInfo?.ipfsHash,
-    };
-
     const res = await uploadIpfsData(data);
-    const resHis = await uploadIpfsData(dataHis);
     const addNewCmtRes = await addNewComment(
       nameCompany !== info?.forumName
         ? nameCompany
@@ -204,6 +197,14 @@ const ReviewDetails: React.FunctionComponent<ReviewDetailsProps> = ({
         setIsModalCmtOpen("ACTION_REJECTED");
         return;
     }
+
+    const dataHis = {
+      nameCompany: companyInfo?.nameCom,
+      datetime: data?.dateTime,
+      cidCompany: companyInfo?.ipfsHash,
+      cidComment: res,
+    };
+    const resHis = await uploadIpfsData(dataHis);
     await addNewCommentHistory(resHis, addressInfo);
     setIsGetData(true);
     setIsFormReview(false);

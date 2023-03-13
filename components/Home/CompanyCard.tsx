@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import nfq from "../../assets/images/nfq_logo.png";
+
 interface CompanyCardProps {
   widthImg?: number;
   heightImg?: number;
