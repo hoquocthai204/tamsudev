@@ -24,13 +24,6 @@ const listTypeCom = [
     value: "Product",
   },
 ];
-const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
 
 const AddCompany: React.FunctionComponent<AddCompanyProps> = ({
   setIsReloadData,
@@ -49,15 +42,6 @@ const AddCompany: React.FunctionComponent<AddCompanyProps> = ({
       setCreateObjectURL(URL.createObjectURL(i));
     }
   };
-
-  // const uploadToServer = async () => {
-  //   const body = new FormData();
-  //   body.append("file", image || "");
-  //   const response = await fetch("/api/upload", {
-  //     method: "POST",
-  //     body,
-  //   });
-  // };
 
   useEffect(() => {
     if (address) setAddressInfo(address);
