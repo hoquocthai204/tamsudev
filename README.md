@@ -13,3 +13,5 @@ Run project with follow command line:
 ```shell
 npm run dev
 ```
+
+Demo Video: https://www.youtube.com/watch?v=WwuDtPJAm8Q
